@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'home_page.dart';
+import 'router.dart';
 
 void main() {
   runApp(const MainApp());
 }
-
-
-final _router = GoRouter(
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) =>const  HomePage(),
-    ),
-  ],
-);
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -23,7 +12,6 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Firebase Meetup',
-      
       theme: ThemeData(
         buttonTheme: Theme.of(context).buttonTheme.copyWith(
               highlightColor: Colors.deepPurple,
@@ -32,7 +20,7 @@ class MainApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
       ),
-      routerConfig: _router,
+      routerConfig: router,
     );
   }
 }
