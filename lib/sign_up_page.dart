@@ -68,7 +68,7 @@ class SignUpPage extends StatelessWidget {
                   child: myTextWidget("Password"),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               myButton("Next Confirmation")

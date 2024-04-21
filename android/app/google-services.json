@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "227118068713",
+    "project_id": "ziyara-46a06",
+    "storage_bucket": "ziyara-46a06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227118068713:android:a99df2bc1b0ef4a19d5178",
+        "android_client_info": {
+          "package_name": "com.example.ziyara_partner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFQ9tNvUZbQ38_pKwndf8BrQaY1QI_7Uw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
