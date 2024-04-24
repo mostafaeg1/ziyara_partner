@@ -1,5 +1,8 @@
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
+import "package:provider/provider.dart";
+import "package:ziyara_partner/app_state.dart";
+import "package:ziyara_partner/services/auth/auth.dart";
 
 import "router.dart";
 import "my_widgets.dart";
@@ -9,6 +12,11 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appState = Provider.of<AppState>(context);
+
+    TextEditingController password_controller = appState.signUpPasswordController;
+    TextEditingController email_controller = appState.signUpEmailController;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -28,7 +36,7 @@ class SignUpPage extends StatelessWidget {
                 "Create Your Acount",
                 style: TextStyle(fontSize: 25),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 100,
               ),
               Center(
@@ -38,40 +46,42 @@ class SignUpPage extends StatelessWidget {
                   child: myTextWidget("Company Name"),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Center(
                 child: Container(
                   width: 380,
                   height: 50,
-                  child: myTextWidget("Email"),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: Container(
-                  width: 380,
-                  height: 50,
-                  child: myTextWidget("Password"),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: Container(
-                  width: 380,
-                  height: 50,
-                  child: myTextWidget("Password"),
+                  child:
+                      myTextWidget("Email", textController: email_controller),
                 ),
               ),
               const SizedBox(
+                height: 20,
+              ),
+              Center(
+                child: SizedBox(
+                  width: 380,
+                  height: 50,
+                  child: myTextWidget("Password",
+                      textController: password_controller),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              // Center(
+              //   child: SizedBox(
+              //     width: 380,
+              //     height: 50,
+              //     child: myTextWidget("Password", textController: password_controller),
+              //   ),
+              // ),
+              const SizedBox(
                 height: 40,
               ),
-              myButton("Next Confirmation")
+              signUpButton("Next Confirmation", context)
             ],
           ),
         ),

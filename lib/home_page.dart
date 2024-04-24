@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:ziyara_partner/app_state.dart';
+import 'package:ziyara_partner/my_widgets.dart';
 import 'router.dart';
 
 class HomePage extends StatelessWidget {
@@ -6,6 +9,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appState = Provider.of<AppState>(context);
+
+    TextEditingController password_controller =
+        appState.logINPasswordController;
+    TextEditingController email_controller = appState.logInEmailController;
+
     return Scaffold(
         backgroundColor:
             Colors.white, // Set the background color of this Scaffold
@@ -28,54 +37,14 @@ class HomePage extends StatelessWidget {
               )),
               const SizedBox(height: 40),
               Container(
-                width: 380,
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: 'User Name', // Placeholder text
-                    hintText: 'Type something', // Hint text
-                    filled: true,
-                    fillColor: Colors.grey[200], // Change the background color
-
-                    border: InputBorder.none, // Remove the default border line
-                    enabledBorder: OutlineInputBorder(
-                      // Specify border when not focused
-                      borderSide: BorderSide.none, // No border line
-                      borderRadius:
-                          BorderRadius.circular(10.0), // Circular shape
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      // Specify border when focused
-                      borderSide: BorderSide.none, // No border line
-                      borderRadius:
-                          BorderRadius.circular(10.0), // Circular shape
-                    ),
-                  ),
-                ),
-              ),
+                  width: 380,
+                  child:
+                      myTextWidget("Email", textController: email_controller)),
               const SizedBox(height: 30),
               SizedBox(
                 width: 380,
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Password', // Placeholder text
-                    filled: true,
-                    fillColor: Colors.grey[200], // Change the background color
-
-                    border: InputBorder.none, // Remove the default border line
-                    enabledBorder: OutlineInputBorder(
-                      // Specify border when not focused
-                      borderSide: BorderSide.none, // No border line
-                      borderRadius:
-                          BorderRadius.circular(10.0), // Circular shape
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      // Specify border when focused
-                      borderSide: BorderSide.none, // No border line
-                      borderRadius:
-                          BorderRadius.circular(10.0), // Circular shape
-                    ),
-                  ),
-                ),
+                child: myTextWidget("Password",
+                    textController: password_controller),
               ),
               Container(
                   alignment: Alignment.centerLeft,
@@ -95,23 +64,9 @@ class HomePage extends StatelessWidget {
                 height: 30,
               ),
               SizedBox(
-                width: 380,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          7), // Adjust the value to change the roundness
-                    ), // Set the background color
-                  ),
-                  child: const Text(
-                    "LOG IN",
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                ),
-              ),
+                  width: 380,
+                  height: 50,
+                  child: logInButton("Log In", context)),
             ],
           ),
         ));
