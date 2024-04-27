@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -12,20 +13,18 @@ import 'package:ziyara_partner/services/auth/auth.dart';
 
 class LoginFormValidation extends StatefulWidget {
   @override
-  _LoginFormValidationState createState() => _LoginFormValidationState();
+  LoginFormValidationState createState() => LoginFormValidationState();
 }
 
-class _LoginFormValidationState extends State<LoginFormValidation> {
+class LoginFormValidationState extends State<LoginFormValidation> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Center(child: Text("Ziyara Partner")),
+        title: const Center(child: Text("Ziyara Partner")),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -34,15 +33,15 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
           key: formkey,
           child: Column(
             children: <Widget>[
-              const illustration(),
-              emailField(),
-              passwordField(),
-              SizedBox(height: 10),
-              const forgotPasswordLabel(),
-              SizedBox(
+              const Illustration(),
+              const EmailField(),
+              const PasswordField(),
+              const SizedBox(height: 15),
+              const ForgotPasswordLabel(),
+              const SizedBox(
                 height: 30,
               ),
-              loginButton(formkey: formkey),
+              LoginButton(formkey: formkey),
               const SizedBox(
                 height: 70,
               ),
@@ -59,8 +58,8 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
   }
 }
 
-class loginButton extends StatelessWidget {
-  const loginButton({
+class LoginButton extends StatelessWidget {
+  const LoginButton({
     super.key,
     required this.formkey,
   });
@@ -69,10 +68,11 @@ class loginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appState = Provider.of<AppState>(context);
+    final appState = Provider.of<AppState>(context);
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final email = appState.getLoginEmail;
+    final password = appState.getLoginPassword;
 
-    TextEditingController passwordController = appState.logINPasswordController;
-    TextEditingController emailController = appState.logInEmailController;
     return Container(
       height: 40,
       width: 250,
@@ -89,10 +89,14 @@ class loginButton extends StatelessWidget {
         ),
         onPressed: () {
           if (formkey.currentState!.validate()) {
-            logIN(emailController, passwordController);
+            print([email, password]);
+            authService.logIn(email: email, password: password);
+            final user = FirebaseAuth.instance.currentUser;
+            print(user);
+            //  logIN(emailController, passwordController);
             // Navigator.push(
             //     context, MaterialPageRoute(builder: (_) => const HomePage()));
-            print("Validated");
+            //print("Validated");
           } else {
             print("Not Validated");
           }
@@ -106,23 +110,22 @@ class loginButton extends StatelessWidget {
   }
 }
 
-class passwordField extends StatefulWidget {
-  const passwordField({
+class PasswordField extends StatefulWidget {
+  const PasswordField({
     super.key,
   });
 
   @override
-  State<passwordField> createState() => _passwordFieldState();
+  State<PasswordField> createState() => _PasswordFieldState();
 }
 
-class _passwordFieldState extends State<passwordField> {
-  @override
+class _PasswordFieldState extends State<PasswordField> {
   bool _isObscure = false;
-
+  TextEditingController passwordController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppState>(context);
 
-    TextEditingController passwordController = appState.logINPasswordController;
     return Padding(
       padding:
           const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
@@ -132,12 +135,16 @@ class _passwordFieldState extends State<passwordField> {
             border: Border.all(),
           ),
           child: TextFormField(
+            onChanged: (String value) {
+              appState.updateLoginPassword(value);
+            },
             controller: passwordController,
             obscureText: _isObscure, // Initially obscure password
             decoration: InputDecoration(
               border: InputBorder.none, // Remove the default border
               labelText: 'Password',
-              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               // Add suffix icon to toggle password visibility
               suffixIcon: IconButton(
                 icon:
@@ -162,16 +169,22 @@ class _passwordFieldState extends State<passwordField> {
   }
 }
 
-class emailField extends StatelessWidget {
-  const emailField({
+class EmailField extends StatefulWidget {
+  const EmailField({
     super.key,
   });
 
   @override
+  State<EmailField> createState() => _EmailFieldState();
+}
+
+class _EmailFieldState extends State<EmailField> {
+  @override
+  TextEditingController emailController = TextEditingController();
+
   Widget build(BuildContext context) {
     var appState = Provider.of<AppState>(context);
 
-    TextEditingController emailController = appState.logInEmailController;
     return Padding(
       padding:
           const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
@@ -181,14 +194,17 @@ class emailField extends StatelessWidget {
           border: Border.all(),
         ),
         child: TextFormField(
+          onChanged: (String value) {
+            appState.updateLoginEmail(value);
+          },
           controller: emailController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             // Change the background color
 
             border: InputBorder.none, // Remove the default border
             labelText: 'Email',
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 15), // Add padding for text
+            contentPadding: EdgeInsets.symmetric(
+                horizontal: 15, vertical: 10), // Add padding for text
           ),
           validator: MultiValidator([
             RequiredValidator(errorText: "* Required"),
@@ -200,8 +216,8 @@ class emailField extends StatelessWidget {
   }
 }
 
-class forgotPasswordLabel extends StatelessWidget {
-  const forgotPasswordLabel({
+class ForgotPasswordLabel extends StatelessWidget {
+  const ForgotPasswordLabel({
     super.key,
   });
 
@@ -209,10 +225,10 @@ class forgotPasswordLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.only(left: 16.0, right: 5),
+      padding: const EdgeInsets.only(left: 16.0, right: 5),
       child: InkWell(
         onTap: () {},
-        child: Text(
+        child: const Text(
           "Forgot password?",
           textAlign: TextAlign.left,
           style: TextStyle(fontSize: 12),
@@ -222,8 +238,8 @@ class forgotPasswordLabel extends StatelessWidget {
   }
 }
 
-class illustration extends StatelessWidget {
-  const illustration({
+class Illustration extends StatelessWidget {
+  const Illustration({
     super.key,
   });
 
@@ -231,7 +247,7 @@ class illustration extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 20),
-      child: Container(
+      child: SizedBox(
           width: 160,
           height: 160,
           child: ClipOval(
