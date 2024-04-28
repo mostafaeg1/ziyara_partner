@@ -23,6 +23,16 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateSignUpEmail(String email) {
+    signupEmail = email;
+    notifyListeners();
+  }
+
+  void updateSignUpPassword(String password) {
+    signupPassword = password;
+    notifyListeners();
+  }
+
   TextEditingController get signUpPasswordController =>
       _signUpPasswordController;
   TextEditingController get signUpEmailController => _signUpEmailController;

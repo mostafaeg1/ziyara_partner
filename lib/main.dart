@@ -6,7 +6,6 @@ import 'app_state.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'services/auth/firebase_auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,10 +15,17 @@ void main() async {
   );
 
   runApp(
-    // Wrap MainApp with Provider
-    ChangeNotifierProvider(
-      create: (context) =>
-          AppState(), 
+    // Wrap MainApp with MultiProvider if you have multiple providers
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => AppState(),
+        ),
+        Provider.value(
+          value: AuthService(), // Provide AuthService instance
+        ),
+        // Add more providers here if needed
+      ],
       child: const MainApp(),
     ),
   );
@@ -39,6 +45,7 @@ class MainApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
+        scaffoldBackgroundColor: Colors.white,
       ),
       routerConfig: router,
     );

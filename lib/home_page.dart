@@ -11,9 +11,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = Provider.of<AppState>(context);
 
-    TextEditingController password_controller =
-        appState.logINPasswordController;
-    TextEditingController email_controller = appState.logInEmailController;
+    TextEditingController password_controller = TextEditingController();
+    TextEditingController email_controller = TextEditingController();
 
     return Scaffold(
         backgroundColor:

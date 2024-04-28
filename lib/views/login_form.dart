@@ -28,8 +28,7 @@ class LoginFormValidationState extends State<LoginFormValidation> {
       ),
       body: SingleChildScrollView(
         child: Form(
-          autovalidateMode: AutovalidateMode
-              .onUserInteraction, //check for validation while typing
+//check for validation while typing
           key: formkey,
           child: Column(
             children: <Widget>[
@@ -49,7 +48,8 @@ class LoginFormValidationState extends State<LoginFormValidation> {
                   onTap: () {
                     router.go('/sign_up');
                   },
-                  child: const Text('New to ziyara? Create an Account'))
+                  child: const Text('New to ziyara? Create an Account',
+                      style: TextStyle(fontWeight: FontWeight.bold)))
             ],
           ),
         ),
@@ -94,8 +94,8 @@ class LoginButton extends StatelessWidget {
             final user = FirebaseAuth.instance.currentUser;
             print(user);
             //  logIN(emailController, passwordController);
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (_) => const HomePage()));
+            router.go('/user_home_page');
+
             //print("Validated");
           } else {
             print("Not Validated");
@@ -158,11 +158,6 @@ class _PasswordFieldState extends State<PasswordField> {
             ),
             validator: MultiValidator([
               RequiredValidator(errorText: "* Required"),
-              MinLengthValidator(6,
-                  errorText: "Password should be at least 6 characters"),
-              MaxLengthValidator(15,
-                  errorText:
-                      "Password should not be greater than 15 characters")
             ]),
           )),
     );
@@ -231,7 +226,7 @@ class ForgotPasswordLabel extends StatelessWidget {
         child: const Text(
           "Forgot password?",
           textAlign: TextAlign.left,
-          style: TextStyle(fontSize: 12),
+          style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
         ),
       ),
     );

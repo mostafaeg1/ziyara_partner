@@ -25,6 +25,7 @@ class FirebaseAuthProvider implements AuthProvider {
         email: email,
         password: password,
       );
+
       final user = currentUser;
       if (user != null) {
         return user;
@@ -39,6 +40,7 @@ class FirebaseAuthProvider implements AuthProvider {
       } else if (e.code == 'invalid-email') {
         throw InvalidEmailAuthException();
       } else {
+        print(e);
         throw GenericAuthException();
       }
     } catch (_) {
@@ -78,6 +80,7 @@ class FirebaseAuthProvider implements AuthProvider {
       } else if (e.code == 'wrong-password') {
         throw WrongPasswordAuthException();
       } else {
+        print(e);
         throw GenericAuthException();
       }
     } catch (_) {
